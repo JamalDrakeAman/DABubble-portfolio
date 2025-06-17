@@ -1,0 +1,69 @@
+// .input-fancy::placeholder {
+//     color: #686868;
+//     transition: color 0.2s ease;
+//   }
+
+//   .input-fancy:focus::placeholder {
+//     color: transparent;
+//   }
+
+
+
+.input-container {
+  border: 2px solid transparent;
+  transition: border 0.2s ease;
+}
+
+
+.input-container:focus-within {
+  border-color: #3b82f6;
+}
+
+.input-container.invalid {
+  border-color: #ef4444;
+}
+
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20%,
+  60% {
+    transform: translateX(-5px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.shake-animation {
+  animation: shake 0.5s ease-in-out;
+}
+
+
+@media (max-height: 850px) {
+  form {
+    gap: 18px;
+  }
+
+  p {
+    display: none;
+  }
+}
+
+
+@media (max-height: 650px) {
+  form {
+    gap: 4px;
+  }
+
+  .input-box {
+    margin-bottom: 14px;
+  }
+}

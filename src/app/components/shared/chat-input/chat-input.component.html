@@ -1,0 +1,91 @@
+<section
+    class="relative h-[145px] p-3 mx-4 flex flex-1 flex-col bg-white rounded-[20px] border-lightpurple border-[1px]">
+
+    @if (edit) {
+    <textarea #messageEditInput (keydown)="handleKeyDown($event)" [(ngModel)]="editText"
+        class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten...">
+      </textarea>
+    } @else {
+    @switch (chatType) {
+    @case ('dm') {
+    <textarea #messageInput (keydown)="handleKeyDown($event)" [(ngModel)]="directMessageService.newMessage.message"
+        class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten...">
+          </textarea>
+    }
+    @case ('channel') {
+    <textarea #messageInput (keydown)="handleKeyDown($event)" [(ngModel)]="messageService.messageInput"
+        class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten...">
+          </textarea>
+    }
+    @case ('thread') {
+    <textarea #messageInput (keydown)="handleKeyDown($event)" [(ngModel)]="threadService.threadMessage.message"
+        class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten...">
+          </textarea>
+    }
+    @case ('new') {
+
+    @if (filterService.searchNewTag() && (filterService.searchNewTag().startsWith('@') ||
+    filterService.searchNewTag().startsWith('#'))) {
+    <div
+        class="absolute top-[-390px] w-64 border border-black h-96 rounded-[30px] shadow-lg bg-white overflow-auto p-5">
+
+        <ul>
+            @for (item of filterService.filteredMessageResults(); track $index) {
+            @if (isUser(item)) {
+            <li (click)="insertTag(item.name)">
+                <app-user [userInfo]="item"></app-user>
+            </li>
+            } @else if (isChannel(item)) {
+            <li (click)="insertTag(item.name)">
+                #{{ item.name }}
+            </li>
+            }
+            }
+        </ul>
+
+
+
+    </div>
+    }
+
+    <textarea #messageInput [(ngModel)]="newMessageText" (input)="onInput($event)"
+        class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten...">
+          </textarea>
+    }
+    }
+    }
+
+    @if (showEmojiPiucker) {
+    <app-emoji-picker class="absolute top-0 translate-y-[-102%]" (emojiPicked)="addEmoji($event)"></app-emoji-picker>
+    }
+
+    <div class="flex items-center justify-between h-10">
+        <div class="flex gap-[25px]">
+            <button (click)="toggleEmojiPicker()"><img class="size-5" src="assets/icons/emoji.svg" alt="Emoji"></button>
+            <button><img class="size-5" src="assets/icons/at.svg" alt="@ User"></button>
+        </div>
+        @if (edit) {
+        <button [disabled]="!isInputValid(editText)" (click)="sendMessage()">
+            <img class="size-5" src="assets/icons/send_message.svg" alt="Send message">
+        </button>
+        } @else if (chatType === 'new') {
+        <button [disabled]="!isInputValid(newMessageText)" (click)="sendMessage()">
+            <img class="size-5" src="assets/icons/send_message.svg" alt="Send message">
+        </button>
+        } @else if (chatType === 'channel') {
+        <button [disabled]="!isInputValid(messageService.messageInput)" (click)="sendMessage()">
+            <img class="size-5" src="assets/icons/send_message.svg" alt="Send message">
+        </button>
+        } @else if (chatType === 'thread') {
+        <button [disabled]="!isInputValid(threadService.threadMessage.message)" (click)="sendMessage()">
+            <img class="size-5" src="assets/icons/send_message.svg" alt="Send message">
+        </button>
+        } @else if (chatType === 'dm') {
+        <button [disabled]="!isInputValid(directMessageService.newMessage.message)" (click)="sendMessage()">
+            <img class="size-5" src="assets/icons/send_message.svg" alt="Send message">
+        </button>
+        }
+    </div>
+
+
+</section>

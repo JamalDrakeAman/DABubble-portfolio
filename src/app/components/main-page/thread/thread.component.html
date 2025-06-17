@@ -1,0 +1,34 @@
+<section class="flex flex-col w-full h-full bg-white rounded-[30px] pb-4">
+    <app-chat-header [chatType]="'thread'" class="mb-[10px]"></app-chat-header>
+    
+    <div class="flex flex-col flex-1 w-full overflow-x-hidden overflow-y-scroll min-h-[150px]">
+
+        <div class="flex gap-5 mt-[25px] px-4" [ngClass]="{ 'flex-row-reverse': userService.fromCurrentUser(getUserFromService().sender)}">
+            <div class="w-max">
+                <img class="min-w-[50px] size-[50px] rounded-full" src="{{ userService.getUserById2(getUserFromService().sender)?.avatar }}" alt="Avatar">
+            </div>
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-5"  [ngClass]="{ 'justify-end': userService.fromCurrentUser(getUserFromService().sender)}">
+                    <span class="text-lg font-bold">{{ userService.getUserById2(getUserFromService().sender)?.name }}</span>
+                    <span class="text-sm">{{ messagesService.formatTime(getUserFromService().timestamp) }}</span>
+                </div>
+                <div class=" p-[15px] rounded-[30px]" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': userService.fromCurrentUser(getUserFromService().sender), 'bg-primary rounded-ss-none': !userService.fromCurrentUser(getUserFromService().sender) }">
+                    <span>{{ getUserFromService().message }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center text-[18px] my-[10px] px-4">
+            <div class="py-[5px] px-[15px] whitespace-nowrap">
+                @if (threadService.currentThread() && threadService.currentThread().content.length > 0) {
+                    <p>{{ threadService.currentThread().content.length }} Antworten</p>
+                }
+            </div>
+            <div class="w-full h-[1px] bg-lightpurple"></div>
+        </div>
+        
+        <app-chat-messages [messages]="threadService.currentThread().content" [chatType]="'thread'"></app-chat-messages>
+    
+    </div>
+    <app-chat-input [chatType]="'thread'"></app-chat-input>
+</section>
