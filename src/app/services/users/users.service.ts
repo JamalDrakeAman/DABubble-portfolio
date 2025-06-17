@@ -23,7 +23,7 @@ export class UsersService implements OnDestroy {
   private onUserOnlineCallback: ((user: User) => void) | null = null;
 
   GuestUser = {
-    id: '8GCDt8zCXnKuGU9sLT2l',
+    id: 'yVH3MeowG5oPCuMIbBEX',
     name: 'Gast',
     email: 'gast@user.de',
     avatar: 'assets/imgs/avatar4.svg'
